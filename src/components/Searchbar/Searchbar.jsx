@@ -1,54 +1,49 @@
 import PropTypes from 'prop-types';
-import { Header, FormStyled, Button, SearchIcon, ButtonLabel, Input, Error } from './Searchbar.styled';
-import { Formik, ErrorMessage } from 'formik';
-import * as yup from 'yup';
+import { Component } from "react";
+import { Header, Form, Button, SearchIcon, ButtonLabel, Input } from './Searchbar.styled';
+import { Notify } from 'notiflix/build/notiflix-notify-aio';
 
-
-const schema = yup.object().shape({
-    search: yup.string().required(),
-})
-
-const initialValues = {
-    search: '',
-};
-
-export const Searchbar = ({ onSubmit }) => {
-    const handleSubmit = (values, { resetForm }) => {
-        console.log(values);
-        if (values.search.trim() === '') {
-            alert('Sorry, enter something in search line.');
-            resetForm();
-            return;
-        }
-        onSubmit({ ...values });
-        resetForm();
+export class Searchbar extends Component  {
+    state = {
+        query: '',
     };
 
-    return (
-        <Formik
-            initialValues={initialValues} 
-            onSubmit={handleSubmit}
-            validationSchema={schema}>
-            <Header>
-                    <FormStyled autoComplete="off">
-                        <Button type="submit"
-                            aria-label="Search">
-                            <SearchIcon size={20}/>
-                            <ButtonLabel>Search</ButtonLabel>
-                        </Button>
-                        <Input
-                            type="text"
-                            name="search"
-                            autoFocus
-                            placeholder="Search images and photos" />
-                        <ErrorMessage name="search" />
-                    </FormStyled>
-                </Header>
-        </Formik>
-    )
-}
+    handleInputChange = e => {
+        this.setState({ query: e.currentTarget.value });
+    };
 
+    handleSubmit = e => {
+        e.preventDefault();
+        if (this.state.query.trim() === '') {
+            Notify.failure('Sorry, enter something in search line.');
+            return;
+        }
+
+        this.props.onSubmit(this.state.query);
+        this.setState({ query: '' });
+    }
+
+    render() {
+        return (
+            <Header>
+                <Form onSubmit={this.handleSubmit}>
+                    <Button type="submit"
+                        aria-label="Search">
+                        <SearchIcon size={20} />
+                        <ButtonLabel>Search</ButtonLabel>
+                    </Button>
+                    <Input autoComplete="off"
+                        type="text"
+                        value={this.state.query}
+                        onChange={this.handleInputChange}
+                        autoFocus
+                        placeholder="Search images and photos" />
+                </Form>
+            </Header>
+        );
+    };
+};
 
 Searchbar.propTypes = {
     onSubmit: PropTypes.func.isRequired,
-}
+};

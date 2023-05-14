@@ -1,5 +1,4 @@
 import styled from '@emotion/styled';
-import { Form, Field } from 'formik';
 import {FaSearch} from 'react-icons/fa'
 
 export const Header = styled.header`
@@ -21,7 +20,7 @@ export const Header = styled.header`
     0px 4px 5px 0px rgba(0, 0, 0, 0.14), 0px 1px 10px 0px rgba(0, 0, 0, 0.12);
 `;
 
-export const FormStyled = styled(Form)`
+export const Form = styled.form`
     display: flex;
     align-items: center;
     width: 100%;
@@ -65,7 +64,7 @@ export const ButtonLabel = styled.span`
     border: 0;
 `;
 
-export const Input = styled(Field)`
+export const Input = styled.input`
     display: inline-block;
     width: 100%;
     font: inherit;
@@ -80,8 +79,3 @@ export const Input = styled(Field)`
         font-size: 18px;
 }
 `
-// export const Error = styled.span`
-//     // margin-bottom: 8px;
-//     color: red;
-//     font-size: 16px;
-// `;

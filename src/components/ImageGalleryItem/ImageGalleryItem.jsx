@@ -8,33 +8,27 @@ export class ImageGalleryItem extends Component {
         isShowModal: false,
     };
 
-    handleOpenModal = () => {
-        this.setState(state => ({
-            isShowModal: true,
-        })); 
-    };
-
-    handleCloseModal = () => {
-        this.setState(state => ({
-            isShowModal: false,
-        })); 
-    };
-
+    toggleModal = () => {
+        this.setState(({isShowModal}) => ({
+            isShowModal: !isShowModal
+        }));
+    }
+    
     render() {
         const { url, alt, largeImage } = this.props
         return (
             <>
-            <Item onClick={this.handleOpenModal}>
+            <Item onClick={this.toggleModal}>
                 <Image
                     src={url}
                     alt={alt}
                     loading="lazy" />
                 </Item>
-                {this.state.isShowModal && <Modal
-                    alt={alt}
-                    largeImage={largeImage}
-                    onClick={this.handleCloseModal}
-                />}
+                {this.state.isShowModal &&
+                    <Modal onClose={this.toggleModal}>
+                        <img alt={alt} src={largeImage}/>
+                    </Modal>
+                }
             </>
         )
     }
